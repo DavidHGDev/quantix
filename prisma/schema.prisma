@@ -15,15 +15,41 @@ datasource db {
 model User {
   id            Int           @id @default(autoincrement())
   firsName      String
-  lastName      String
+  lastName      String?
   tipoDocumento TipoDocumento
   documento     String
   email         String        @unique
   password      String
+  role          Role          @default(VENDEDOR)
+  isActive      Boolean       @default(true)
+}
+
+model Product {
+  id           Int       @id @default(autoincrement())
+  codigoBarras String
+  nameProduct  String
+  stock        Int       @default(0)
+  priceVenta   Decimal   @db.Decimal(10, 2)
+  isActive     Boolean   @default(true)
+  categoria    Categoria @relation(fields: [categoriaId], references: [id])
+  categoriaId  Int
+}
+
+model Categoria {
+  id            Int       @id @default(autoincrement())
+  nameCategorie String
+  description   String?
+  productos     Product[]
 }
 
 enum TipoDocumento {
   CC
   NIT
   PP
+}
+
+enum Role {
+  ADMIN
+  VENDEDOR
+  TESTER
 }
