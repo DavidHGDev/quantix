@@ -1,12 +1,13 @@
-import { PrismaClient } from '../../generated/prisma/client';
+import { PrismaClient } from '../../generated/prisma/client.ts';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-let prisma = new PrismaClient();
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+
+const prisma = new PrismaClient({ adapter });
 
 export default prisma;
 
 /**
- * La forma más conveniente de exportar la conexión para un servidor
- * que se mantiene encendido y requiere realizar transacciones delicadas
- * El cliente Prisma está escrito en Rust y es eficiente en el manejo
- * de conexiones y distribuir el pool de las mismas.
+*En la versión de prisma 7, se debe utilizar el adaptador. 
+*Si no se utiliza, no funciona.
  */
