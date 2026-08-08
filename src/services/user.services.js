@@ -1,10 +1,55 @@
 // prisma 
+import bcrypt from 'bcrypt';
 import prisma from "../lib/prisma.js";
 
 class UserServices {
+    #userSelect = {
+        id: true,
+        firsName: true,
+        lastName: true,
+        tipoDocumento: true,
+        document: true,
+        email: true,
+        role: true,
+    }
+
     async getAllUser(){
         const users = await prisma.user.findMany(); // consulta todos los  usuarios. 
         return users; // retorna el objeto al controlador
+    }
+
+    async getUser(email){
+        // lógica aquí
+        
+    }
+
+    async createUser(data){
+        //crea usuarios
+        const { firstName, lastName, tipoDocumento, documento, email, password, role } = data;
+        const rountSalt = 10; // Se define la cantidad de rondas para crear el hash
+        const hashPassword = await bcrypt.hash(password, rountSalt); //Se crea el hash
+
+        const newUser = await prisma.user.create({
+            data: {
+                firsName,
+                lastName,
+                tipoDocumento,
+                documento,
+                email,
+                role,
+                password: hashPassword
+            }, select: this.#userSelect // esto retorna los datos creados, excluyendo la contraseña. El select sirve para decir que campos mostrar
+        });
+
+        return newUser; //Retorna el usuario excluyendo la contraseña
+    }
+
+    async updateUser(id, data){
+
+    }
+
+    async deleteUser(id){
+
     }
 }
 
