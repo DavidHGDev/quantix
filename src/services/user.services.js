@@ -5,16 +5,19 @@ import prisma from "../lib/prisma.js";
 class UserServices {
     #userSelect = {
         id: true,
-        firsName: true,
+        firstName: true,
         lastName: true,
         tipoDocumento: true,
-        document: true,
+        documento: true,
         email: true,
         role: true,
+        isActive: true, 
     }
 
     async getAllUser(){
-        const users = await prisma.user.findMany(); // consulta todos los  usuarios. 
+        const users = await prisma.user.findMany({
+            select: this.#userSelect
+        }); // consulta todos los  usuarios. 
         return users; // retorna el objeto al controlador
     }
 
@@ -31,7 +34,7 @@ class UserServices {
 
         const newUser = await prisma.user.create({
             data: {
-                firsName,
+                firstName,
                 lastName,
                 tipoDocumento,
                 documento,
@@ -49,6 +52,9 @@ class UserServices {
     }
 
     async deleteUser(id){
+        return await prisma.user.delete({
+            where: { id }, select: this.#userSelect
+        })
 
     }
 }
