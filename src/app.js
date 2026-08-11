@@ -1,6 +1,11 @@
 import e from "express";
+import * as z from 'zod';
+import { es } from "zod/locales";
 import { errorHandler } from "./middlewares/error.Handler.js";
 import routerApp from './routers/index.js'
+
+// Se configura Zod de forma global para traducir los errores a español
+z.config(es());
 
 const PORT = 3000;
 
