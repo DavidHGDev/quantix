@@ -2,7 +2,7 @@
   "name": "quantix",
   "version": "1.0.3",
   "description": "Sistema de inventario Quantix",
-  "main": "index.js",
+  "main": "./src/app.js",
   "scripts": {
     "start": "node --env-file=.env --watch ./src/app.js"
   },
@@ -12,7 +12,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "11.6.0",
+      "version": "11.21.0",
       "onFail": "download"
     }
   },
@@ -23,7 +23,9 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "prisma": "^7.8.0",
     "zod": "^4.4.3"
-  }
+  },
+  "packageManager": "pnpm@11.21.0+sha512.521705bce689924eac72f5a3587122f362689ef6571e55ba80076fd637c11132ecffada26fad4ea79c485bfddbfd3d5a2a5b05805a77e893de71ec8a6cca3bb1"
 }
