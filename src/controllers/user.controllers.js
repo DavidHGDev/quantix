@@ -14,6 +14,12 @@ export async function createUser(req, res) {
     res.status(200).json(newUser); 
 }
 
+export async function getOneUser(req, res) {
+    const { id } = req.params;
+    const user = await userServices.getOneUser(id);
+    res.status(200).json(user)
+}
+
 export async function deleteUser(req, res) {
     const id = Number(req.params.id);
     const deleteUser = await userServices.deleteUser(id);

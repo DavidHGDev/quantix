@@ -21,8 +21,11 @@ class UserServices {
         return users; // retorna el objeto al controlador
     }
 
-    async getUser(email){
-        // lógica aquí
+    async getOneUser(id){
+        const user = await prisma.user.findUnique({
+            where: { id }, select: this.#userSelect
+        });
+        return user;
         
     }
 
