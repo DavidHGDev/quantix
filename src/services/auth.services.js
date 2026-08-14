@@ -12,14 +12,19 @@ class AuthLogin {
 
         //validar si el usuario existe
         if(!usuario) {
-            return `Usuario o contraseña incorrectos`
+            return { message: `Usuario o contraseña incorrectos` }
+        }
+
+        //validar si el usuario está activo
+        if(!usuario.isActive){
+            return {message: 'Usuario inactivo'}
         }
 
         // validar usuario y contraseña 
         const compareExitoso = await bcrypt.compare(password, usuario.password);
 
         if(!compareExitoso) {
-            return `Usuario o contraseña incorrectos`
+            return { message: `Usuario o contraseña incorrectos` }
         }
 
         // Se crea el payload con la información para crear el token

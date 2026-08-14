@@ -51,12 +51,21 @@ class UserServices {
     }
 
     async updateUser(id, data){
+        const { firstName, lastName, email, tipoDocumento, documento, role, password } = data;
 
+        const dataUpdate = { ...data }
+        const rountSalt = 10;
+        if(password){
+            dataUpdate.password = await bcrypt.hash(password, rountSalt);
+        }
+
+        return await prisma.user.update({
+            where: { id },
+            data: dataUpdate,
+            select: this.#userSelect
+        })
     }
 
-    async adminUpdateUser(id, data){
-        
-    }
 
     async deleteUser(id){
         return await prisma.user.delete({

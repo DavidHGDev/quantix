@@ -20,6 +20,13 @@ export async function getOneUser(req, res) {
     res.status(200).json(user)
 }
 
+export const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+    const userUpdate = await userServices.updateUser(id, data);
+    res.status(200).json(userUpdate);
+}
+
 export async function deleteUser(req, res) {
     const id = Number(req.params.id);
     const deleteUser = await userServices.deleteUser(id);
