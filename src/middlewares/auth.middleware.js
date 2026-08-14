@@ -5,7 +5,7 @@ export async function verificarToken(req, res, next) {
     const authHeader = req.headers['authorization'];
 
     // 2) se debe extraer el token, y se utiliza split('')[1] para extraer la segunda posición, primera (bearer token) segunda (token)
-    const token = authHeader?.split(' ')[1]; // se puede utilizar el authHeader && para validar la primer condición o authHeader?.split esto indica que es opcional
+    const token = authHeader && authHeader.split(' ')[1]; // se puede utilizar el authHeader && para validar la primer condición o authHeader?.split esto indica que es opcional
 
     // 3) verificar si el token es válido, si no ha expirado. 
     if(!token){
@@ -14,6 +14,7 @@ export async function verificarToken(req, res, next) {
 
     // verificar el token con el secreto, decodificarlo. 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
 
     // Regresar información al cliente con el usuario decodificado. 
     req.usuario = decoded;

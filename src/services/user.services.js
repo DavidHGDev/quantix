@@ -54,6 +54,10 @@ class UserServices {
 
     }
 
+    async adminUpdateUser(id, data){
+        
+    }
+
     async deleteUser(id){
         return await prisma.user.delete({
             where: { id }, select: this.#userSelect

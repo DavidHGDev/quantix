@@ -34,6 +34,22 @@ export const errorHandler = (err, req, res, next) => {
         })
     }
 
+    // 🔴 Manejo de Errores de JWT (Token Malformado o Firma Inválida)
+    if (err.name === 'JsonWebTokenError') {
+        return res.status(401).json({
+            status: 'Error',
+            message: 'El token de autenticación es inválido o está malformado.'
+        });
+    }
+
+    // 🔴 Manejo de Token Expirado
+    if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({
+            status: 'Error',
+            message: 'El token ha expirado. Por favor, inicia sesión de nuevo.'
+        });
+    }
+
 
     // 2) capturar el statusCode, por defecto es (500)
     const statusCode = err.statusCode || err.status || 500;
