@@ -3,6 +3,8 @@ import * as z from 'zod';
 import { es } from "zod/locales";
 import { errorHandler } from "./middlewares/error.Handler.js";
 import routerApp from './routers/index.js'
+import path from 'path';
+import { fileURLToPath } from "url";
 
 // Se configura Zod de forma global para traducir los errores a español
 z.config(es());
@@ -10,6 +12,15 @@ z.config(es());
 const PORT = 3000;
 
 const app = e();
+
+//Servir carpeta public de forma statica
+const __dirfile = fileURLToPath(import.meta.url); // extraemos la url
+const __dirname = path.dirname(__dirfile); // convertimos en una dirección legible 
+const ruta = path.join(__dirname, '../public'); // Servir la carpeta public, de la ruta
+
+app.use(e.static(ruta)); //aquí servimos la carpeta public
+
+console.log(__dirname)
 
 //Se utiliza el formato Json para que el backend pueda entender el formato. 
 app.use(e.json());

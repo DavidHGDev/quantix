@@ -12,19 +12,25 @@ class AuthLogin {
 
         //validar si el usuario existe
         if(!usuario) {
-            return { message: `Usuario o contraseña incorrectos` }
+            const error = new Error(`Usuario o contraseña incorrecta. Contacte al Administrador`);
+            error.statusCode = 401;
+            throw error;
         }
 
         //validar si el usuario está activo
         if(!usuario.isActive){
-            return {message: 'Usuario inactivo'}
+            const error = new Error('Usuario Inactivo. Contacte al Administrador');
+            error.statusCode = 403;
+            throw error;    
         }
 
         // validar usuario y contraseña 
         const compareExitoso = await bcrypt.compare(password, usuario.password);
 
         if(!compareExitoso) {
-            return { message: `Usuario o contraseña incorrectos` }
+            const error = new Error(`Usuario o contraseña incorrecta. Contacte al Administrador`);
+            error.statusCode = 401;
+            throw error;
         }
 
         // Se crea el payload con la información para crear el token

@@ -24,6 +24,8 @@ export const adminUpdateUserSchema = createUserSchema.extend({ isActive: z.boole
 //Solo modificar la contraseña, solo debe permitir ese cambio del campo password.
 export const passwordUpdate = createUserSchema.pick({ password: true });
 
+export const loginUser = createUserSchema.pick({ password: true, email: true })
+
 export const idParamsSchema = z.object({
     id: z.coerce.number().positive()
 });
