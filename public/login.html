@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script type="module" src="./src/routes.js"></script>
+    <title>Quantix POS - Acceso</title>
+    <link rel="stylesheet" href="./css/login.css">
+    <script type="module" src="./src/login.js"></script>
 </head>
 <body>
+    <!-- Botón para alternar el tema -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">🌙 Oscuro</button>
+
     <main>
         <form id="form-id" class="form">
             <h1>Quantix</h1>
@@ -20,8 +24,8 @@
                 <input type="password" id="password" placeholder="**********" name="password">
             </div>
 
-            <button>ingresar</button>
-            <span id="span-admin"></span>
+            <button type="submit" class="btn-ingresar">Iniciar Sesión</button>
+            <span id="span-admin" class="span-message"></span>
         </form>
     </main>
 </body>

@@ -3,7 +3,7 @@ import { validarSchema } from "../middlewares/validador.Handler.js";
 import { createUserSchema, updateUserSchema, idParamsSchema, adminUpdateUserSchema, passwordUpdate } from "../schemas/user.schemas.js";
 import { getUser, createUser, getOneUser, deleteUser, updateUser } from "../controllers/user.controller.js";
 import { verificarToken } from "../middlewares/auth.middleware.js";
-import { validacionRoles } from "../middlewares/validar.roles.js";
+import { validacionRoles, permitirUserActualoAdmin } from "../middlewares/validar.roles.js";
 import { PERMISOS } from "../config/roles.js";
 
 const router = Router();
@@ -12,7 +12,7 @@ router.get('/', verificarToken, validacionRoles(PERMISOS.LEER_USUARIOS), getUser
 
 router.get('/:id',
     verificarToken,
-    validacionRoles(PERMISOS.LEER_USUARIOS),
+    permitirUserActualoAdmin,
     validarSchema(idParamsSchema, 'params'),
     getOneUser
 );
@@ -46,7 +46,7 @@ router.patch('/password/:id',
 //Actualizar el mismo usuario
 router.patch('/:id', 
     verificarToken,
-    //validacionRoles(PERMISOS.ESCRIBIR_USURIOS), //crear función para validar mismo usuario
+    permitirUserActualoAdmin,
     validarSchema(idParamsSchema, 'params'),
     validarSchema(updateUserSchema, 'body'),
     updateUser

@@ -5,6 +5,7 @@ import { errorHandler } from "./middlewares/error.Handler.js";
 import routerApp from './routers/index.js'
 import path from 'path';
 import { fileURLToPath } from "url";
+import cors from 'cors';
 
 // Se configura Zod de forma global para traducir los errores a español
 z.config(es());
@@ -12,6 +13,19 @@ z.config(es());
 const PORT = 3000;
 
 const app = e();
+
+//Configuramos cors para evitar que entre cualqueira
+
+app.use(cors({
+    //Solo permitir de una dirección
+    origin: 'http://127.0.0.1:5500',
+    
+    //Solo permitimos lo métodos que la API, realmente USA
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
+
+    //indicamos al navegador que es válido enviar el token en la cabecera
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 //Servir carpeta public de forma statica
 const __dirfile = fileURLToPath(import.meta.url); // extraemos la url

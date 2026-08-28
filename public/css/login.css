@@ -1,0 +1,152 @@
+/* =========================================
+   VARIABLES DE COLOR (Manejo de Temas)
+   ========================================= */
+
+/* Tema Claro (Por defecto) */
+:root {
+    --bg-color: #f8fafc;
+    --form-bg: #ffffff;
+    --text-color: #0f172a;
+    --text-muted: #475569;
+    --border-color: #e2e8f0;
+    --input-bg: #f1f5f9;
+    --primary-color: #059669; /* Verde Quantix */
+    --primary-hover: #047857;
+}
+
+/* Tema Oscuro */
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --form-bg: #1e293b;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    --input-bg: #0f172a;
+    --primary-color: #10b981; /* Verde más brillante para fondos oscuros */
+    --primary-hover: #059669;
+}
+
+/* =========================================
+   ESTILOS GENERALES
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* =========================================
+   BOTÓN CAMBIO DE TEMA
+   ========================================= */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    background-color: var(--form-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.theme-toggle:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   ESTRUCTURA DEL FORMULARIO
+   ========================================= */
+.form {
+    background-color: var(--form-bg);
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* =========================================
+   INPUTS Y LABELS
+   ========================================= */
+.grupo-inputs {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.grupo-inputs label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.grupo-inputs input {
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.grupo-inputs input:focus {
+    border-color: var(--primary-color);
+    background-color: var(--form-bg);
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15); /* Halo de enfoque */
+}
+
+/* =========================================
+   BOTÓN DE ENVÍO
+   ========================================= */
+.btn-ingresar {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-ingresar:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-ingresar:active {
+    transform: scale(0.98); /* Efecto de pulsación */
+}
+
