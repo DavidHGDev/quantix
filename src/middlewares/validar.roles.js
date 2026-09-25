@@ -19,14 +19,14 @@ export const permitirUserActualoAdmin = (req, res, next) => {
     const userActual = req.usuario;
     const userAEditar = Number(req.params.id);
 
-    if(userActual && userActual.role === 'ADMIN'){
+    if(userActual.role === 'ADMIN'){
         //Si el rol es ADMIN, se da siguiente al siguiente middleware
-        next();
+       return  next();
     }
 
-    if(userActual && userActual.id === userAEditar){
+    if(userActual.id === userAEditar){
         //Si es el mismo usuario logueado, se da paso al siguiente middleware
-        next();
+        return next();
     }
 
     res.status(403).json({
