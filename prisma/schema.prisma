@@ -24,6 +24,11 @@ enum Role {
   TESTER
 }
 
+enum MetodoPago {
+  EFECTIVO
+  TRANSFERENCIA
+}
+
 model User {
   id            Int           @id @default(autoincrement())
   firstName     String
@@ -34,6 +39,40 @@ model User {
   password      String
   role          Role          @default(VENDEDOR)
   isActive      Boolean       @default(true)
+  invoices      Invoice[]
+}
+
+//Factura
+model Invoice {
+  id           Int        @id @default(autoincrement())
+  fecha        DateTime
+  usuario      User       @relation(fields: [usuarioId], references: [id])
+  usuarioId    Int
+  cliente      Client     @relation(fields: [clienteId], references: [id])
+  clienteId    Int
+  metodoDePago MetodoPago
+  totalPagar   Float
+}
+
+model DetallaVenta {
+  id             Int     @id @default(autoincrement())
+  facturaId      Int
+  productoId     Int
+  cantidad       Int
+  precioUnitario Decimal
+}
+
+model Client {
+  id            Int           @id @default(autoincrement())
+  firstName     String
+  lastName      String?
+  tipoDocumento TipoDocumento
+  documento     String
+  email         String?
+  phone         String?
+  address       String?
+  isActive      Boolean       @default(true)
+  invoices      Invoice[]
 }
 
 model Categoria {
