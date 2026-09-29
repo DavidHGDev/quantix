@@ -14,6 +14,25 @@ class UserServices {
         isActive: true, 
     }
 
+    async getUsers({ search, page = 1, limit = 10 }) {
+        const skip = (Number(page) - 1) * Number(limit);
+        const take = Number(limit);
+        const where = search ? {
+            OR: [
+                { documento: { contains: search, mode: 'insensitive' } },
+                { email: { contains: search, mode: 'insensitive' } },
+                { firstName: { contains: search, mode: 'insensitive' } },
+                { lastName: { contains: search, mode: 'insensitive' } }
+            ]
+        } : {};
+
+        const [data, total] = await Promise.all([
+            prisma.user.findMany({ where, skip, take, orderBy: { id: 'desc' } }),
+            prisma.user.count({ where })
+        ]);
+        return { data, pagination: { total, page: Number(page), totalPages: Math.ceil(total / take) || 1 } };
+    }
+
     async getAllUser(){
         const users = await prisma.user.findMany({
             select: this.#userSelect

@@ -1,10 +1,24 @@
 import userServices from "../services/user.services.js";
 
-export async function getUser(req, res, next){
-    const usuarios = await userServices.getAllUser();
-    console.log(usuarios)
-    res.status(201).json(usuarios);
+export async function getUser(req, res, next) {
+    try {
+        const { search, page, limit } = req.query;
+        const result = await userServices.getUsers({
+            search,
+            page: page ? Number(page) : 1,
+            limit: limit ? Number(limit) : 10
+        });
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
 }
+
+// export async function getUsers(req, res, next){
+//     const usuarios = await userServices.getAllUser();
+//     console.log(usuarios)
+//     res.status(201).json(usuarios);
+// }
 
 export async function createUser(req, res, next) {
     const user = req.body; // los datos que envía el usuario. Bien sea la data con body, o id con params. 

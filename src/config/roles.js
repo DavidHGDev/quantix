@@ -22,5 +22,10 @@ export const PERMISOS = {
 
     // Módulo de Compras
     LEER_COMPRAS: [ROLES.ADMIN, ROLES.VENDEDOR],
-    ESCRIBIR_COMPRAS: [ROLES.ADMIN]
+    ESCRIBIR_COMPRAS: [ROLES.ADMIN],
+
+    // Módulo de Ventas y Cartera (Caja y Créditos)
+    LEER_VENTAS: [ROLES.ADMIN, ROLES.VENDEDOR], // Ambos pueden ver el historial de ventas
+    CREAR_VENTAS: [ROLES.ADMIN, ROLES.VENDEDOR], // Ambos pueden facturar y registrar abonos
+    ANULAR_VENTAS: [ROLES.ADMIN], // Operación crítica reservada a gerencia
 }

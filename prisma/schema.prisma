@@ -27,6 +27,13 @@ enum Role {
 enum MetodoPago {
   EFECTIVO
   TRANSFERENCIA
+  CREDITO
+}
+
+enum EstadoCredito {
+  PENDIENTE
+  PAGADO
+  ANULADO
 }
 
 enum EstadoOrden {
@@ -47,28 +54,33 @@ model User {
   isActive      Boolean       @default(true)
   invoices      Invoice[]
   ordenesCompra Order[]
+  abonos        Payment[]
 }
 
 //Factura
 model Invoice {
   id           Int        @id @default(autoincrement())
-  fecha        DateTime
+  fecha        DateTime       @default(now())
   usuario      User       @relation(fields: [usuarioId], references: [id])
   usuarioId    Int
   cliente      Client     @relation(fields: [clienteId], references: [id])
   clienteId    Int
   metodoDePago MetodoPago
-  totalPagar   Float
+  totalPagar   Decimal        @db.Decimal(12, 2)
+  credito      Credit?
+  detalles     DetallaVenta[]
 }
 
+// Detalle de la Venta
 model DetallaVenta {
-  id             Int     @id @default(autoincrement())
-  //factura        Invoice @relation(fields: [facturaId], references: [id])
+  id             Int      @id @default(autoincrement())
+  factura        Invoice  @relation(fields: [facturaId], references: [id])
   facturaId      Int
-  producto       Product @relation(fields: [productoId], references: [id])
+  producto       Product  @relation(fields: [productoId], references: [id])
   productoId     Int
   cantidad       Int
-  precioUnitario Decimal @db.Decimal(10, 2)
+  precioUnitario Decimal  @db.Decimal(10, 2)
+  subtotal       Decimal  @db.Decimal(12, 2)
 }
 
 model Client {
@@ -82,6 +94,7 @@ model Client {
   address       String?
   isActive      Boolean       @default(true)
   invoices      Invoice[]
+  creditos      Credit[]
 }
 
 model Categoria {
@@ -137,4 +150,33 @@ model OrderDetail {
   productoId  Int
   cantidad    Int
   priceCompra Decimal @db.Decimal(10,2)
+}
+
+// Cuenta por cobrar (Crédito)
+model Credit {
+  id            Int           @id @default(autoincrement())
+  cliente       Client        @relation(fields: [clienteId], references: [id])
+  clienteId     Int
+  factura       Invoice       @relation(fields: [facturaId], references: [id])
+  facturaId     Int           @unique // Una factura solo tiene una cuenta de crédito
+  montoOriginal Decimal       @db.Decimal(12, 2)
+  saldoCredito  Decimal       @db.Decimal(12, 2)
+  estado        EstadoCredito @default(PENDIENTE)
+  isActive      Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  abonos        Payment[]
+}
+
+// Abonos / Pagos parciales
+model Payment {
+  id           Int        @id @default(autoincrement())
+  credito      Credit     @relation(fields: [creditoId], references: [id])
+  creditoId    Int
+  montoAbono   Decimal    @db.Decimal(12, 2)
+  metodoPago   MetodoPago // EFECTIVO o TRANSFERENCIA
+  nota         String?
+  usuario      User       @relation(fields: [usuarioId], references: [id])
+  usuarioId    Int
+  createdAt    DateTime   @default(now())
 }

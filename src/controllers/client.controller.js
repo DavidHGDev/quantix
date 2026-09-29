@@ -1,8 +1,22 @@
 import clientServices from '../services/client.services.js';
 
+// export async function getAllClien(req, res, next) {
+//     const clientes = await clientServices.getAllClien();
+//     res.status(200).json(clientes);
+// }
+
 export async function getAllClien(req, res, next) {
-    const clientes = await clientServices.getAllClien();
-    res.status(200).json(clientes);
+    try {
+        const { search, page, limit } = req.query;
+        const result = await clientServices.getClients({
+            search,
+            page: page ? Number(page) : 1,
+            limit: limit ? Number(limit) : 10
+        });
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
 }
 
 export async function getOneClient(req, res, next) {
