@@ -5,6 +5,7 @@ import clientRouter from './client.router.js'
 import inventoryRouter from './inventory.router.js';
 import purcherRouter from './purchases.router.js';
 import salesRouter from './sales.router.js';
+import dashboardRouter from './dashboard.router.js';
 
 
 const router = new Router();
@@ -15,6 +16,7 @@ router.use('/clients', clientRouter);
 router.use('/inventory', inventoryRouter);
 router.use('/purchases', purcherRouter);
 router.use('/sales', salesRouter);
+router.use('/dashboard', dashboardRouter);
 
 export default router;
 
