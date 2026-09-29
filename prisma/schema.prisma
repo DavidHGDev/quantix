@@ -29,6 +29,12 @@ enum MetodoPago {
   TRANSFERENCIA
 }
 
+enum EstadoOrden {
+  PENDIENTE
+  RECIBIDA
+  CANCELADA
+}
+
 model User {
   id            Int           @id @default(autoincrement())
   firstName     String
@@ -40,6 +46,7 @@ model User {
   role          Role          @default(VENDEDOR)
   isActive      Boolean       @default(true)
   invoices      Invoice[]
+  ordenesCompra Order[]
 }
 
 //Factura
@@ -56,10 +63,12 @@ model Invoice {
 
 model DetallaVenta {
   id             Int     @id @default(autoincrement())
+  //factura        Invoice @relation(fields: [facturaId], references: [id])
   facturaId      Int
+  producto       Product @relation(fields: [productoId], references: [id])
   productoId     Int
   cantidad       Int
-  precioUnitario Decimal
+  precioUnitario Decimal @db.Decimal(10, 2)
 }
 
 model Client {
@@ -84,7 +93,7 @@ model Categoria {
 
 model Product {
   id           Int        @id @default(autoincrement())
-  codigoBarras String
+  codigoBarras String @unique
   nameProduct  String
   stock        Int        @default(0)
   priceVenta   Decimal    @db.Decimal(10, 2)
@@ -92,15 +101,40 @@ model Product {
   categoria    Categoria  @relation(fields: [categoriaId], references: [id])
   categoriaId  Int
   suppliers    Supplier[]
+  detallesCompra OrderDetail[]
+  detallesVenta  DetallaVenta[]
 }
 
 //Tabla de proveedor
 model Supplier {
   id            Int           @id @default(autoincrement())
   tipoDocumento TipoDocumento
-  documento     String
+  documento     String  @unique
   razonSocial   String
   phone         String
   email         String
   products      Product[]
+  ordenesCompra Order[]
+}
+
+//ordenes de compra
+model Order {
+  id          Int           @id @default(autoincrement())
+  fecha       DateTime      @default(now())
+  proveedor   Supplier      @relation(fields: [proveedorId], references: [id])
+  proveedorId Int
+  estado      EstadoOrden   @default(PENDIENTE)
+  usuario     User          @relation(fields: [userId], references: [id])
+  userId      Int
+  detalles    OrderDetail[]
+}
+
+model OrderDetail {
+  id          Int     @id @default(autoincrement())
+  orden       Order   @relation(fields: [ordenId], references: [id])
+  ordenId     Int
+  producto    Product @relation(fields: [productoId], references: [id])
+  productoId  Int
+  cantidad    Int
+  priceCompra Decimal @db.Decimal(10,2)
 }
