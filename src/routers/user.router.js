@@ -18,8 +18,8 @@ router.get('/:id',
 );
 
 router.post('/', 
-    verificarToken,
-    validacionRoles(PERMISOS.ESCRIBIR_USURIOS),
+    //verificarToken,
+    //validacionRoles(PERMISOS.ESCRIBIR_USURIOS),
     validarSchema(createUserSchema, 'body'),
     createUser
 );

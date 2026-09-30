@@ -10,8 +10,52 @@ class InventoryServices {
     }
 
     // ================= PROVEEDORES =================
-    async getSuppliers() {
-        return await prisma.supplier.findMany({ orderBy: { razonSocial: 'asc' } });
+    async getSuppliers({ search, page = 1, limit = 10, includeInactive = false } = {}) {
+        // Si no se envían page y limit, asumimos que es una consulta para un select (sin paginar)
+        if (!page && !limit && !search) {
+             return await prisma.supplier.findMany({ 
+                 where: { isActive: true }, 
+                 orderBy: { razonSocial: 'asc' } 
+             });
+        }
+
+        const skip = (Number(page) - 1) * Number(limit);
+        const take = Number(limit);
+        
+        const where = {
+            ...(includeInactive ? {} : { isActive: true }),
+            ...(search ? {
+                OR: [
+                    { razonSocial: { contains: search, mode: 'insensitive' } },
+                    { documento: { contains: search, mode: 'insensitive' } },
+                    { email: { contains: search, mode: 'insensitive' } }
+                ]
+            } : {})
+        };
+
+        const [data, total] = await Promise.all([
+            prisma.supplier.findMany({
+                where,
+                skip,
+                take,
+                include: {
+                    _count: { select: { ordenesCompra: true } },
+                    ordenesCompra: { where: { estado: 'PENDIENTE' } }
+                },
+                orderBy: { id: 'desc' }
+            }),
+            prisma.supplier.count({ where })
+        ]);
+
+        return { 
+            data, 
+            pagination: { 
+                total, 
+                page: Number(page), 
+                totalPages: Math.ceil(total / take) || 1, 
+                hasMore: skip + data.length < total 
+            } 
+        };
     }
     async createSupplier(data) {
         return await prisma.supplier.create({ data });

@@ -15,7 +15,9 @@ export const createSupplierSchema = z.object({
     phone: z.string().min(7, "Teléfono inválido"),
     email: z.string().email("Correo inválido")
 });
-export const updateSupplierSchema = createSupplierSchema.partial();
+export const updateSupplierSchema = createSupplierSchema.partial().extend({
+    isActive: z.boolean().optional()
+});
 
 // --- PRODUCTOS ---
 export const createProductSchema = z.object({

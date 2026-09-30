@@ -12,6 +12,20 @@ export async function createCategory(req, res, next) {
 
 // --- PROVEEDORES ---
 export async function getSuppliers(req, res, next) {
+// Extraemos los parámetros si existen (para la tabla principal)
+    const { search, page, limit, all } = req.query;
+    
+    // Si hay parámetros de paginación, llamamos al servicio con ellos
+    if (page || limit || search) {
+        const result = await inventoryServices.getSuppliers({
+            search,
+            page: page ? Number(page) : 1,
+            limit: limit ? Number(limit) : 10,
+            includeInactive: all === 'true'
+        });
+        return res.status(200).json(result);
+    }
+    // Si no hay parámetros (ej. modal de órdenes de compra), traemos la lista plana
     const suppliers = await inventoryServices.getSuppliers();
     res.status(200).json(suppliers);
 }
