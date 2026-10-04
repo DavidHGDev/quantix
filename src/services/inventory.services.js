@@ -10,6 +10,13 @@ class InventoryServices {
     }
 
     // ================= PROVEEDORES =================
+    async getSuppliersFlat() {
+        return await prisma.supplier.findMany({ 
+            where: { isActive: true }, 
+            orderBy: { razonSocial: 'asc' } 
+        });
+    }
+    
     async getSuppliers({ search, page = 1, limit = 10, includeInactive = false } = {}) {
         // Si no se envían page y limit, asumimos que es una consulta para un select (sin paginar)
         if (!page && !limit && !search) {
@@ -59,6 +66,13 @@ class InventoryServices {
     }
     async createSupplier(data) {
         return await prisma.supplier.create({ data });
+    }
+
+    async updateSupplier(id, data) {
+        return await prisma.supplier.update({
+            where: { id: Number(id) },
+            data
+        });
     }
 
     // ================= PRODUCTOS =================

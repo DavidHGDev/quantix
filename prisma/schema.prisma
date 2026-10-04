@@ -124,8 +124,8 @@ model Supplier {
   tipoDocumento TipoDocumento
   documento     String  @unique
   razonSocial   String
-  phone         String
-  email         String
+  phone         String?
+  email         String?
   products      Product[]
   isActive      Boolean @default(true)
   ordenesCompra Order[]
