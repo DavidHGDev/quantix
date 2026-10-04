@@ -38,5 +38,5 @@ Asegúrate de tener instalado en tu entorno local:
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/tu-usuario/quantix-erp.git](https://github.com/tu-usuario/quantix-erp.git)
-   cd quantix-erp
+   git clone https://github.com/DavidHGDev/quantix.git
+   cd quantix
