@@ -23,7 +23,7 @@ Quantix es un sistema ERP (Enterprise Resource Planning) Full-Stack diseñado pa
 **Backend:**
 * Node.js & Express.js
 * Prisma ORM
-* Base de Datos: PostgreSQL / SQLite
+* Base de Datos: PostgreSQL
 * Zod (Validación estricta de esquemas de datos)
 * JSON Web Tokens (JWT) para autenticación y autorización
 
@@ -32,7 +32,7 @@ Quantix es un sistema ERP (Enterprise Resource Planning) Full-Stack diseñado pa
 Asegúrate de tener instalado en tu entorno local:
 * [Node.js](https://nodejs.org/) (v18 o superior)
 * Gestor de paquetes: `npm` o `pnpm`
-* PostgreSQL (Si se utiliza como motor de base de datos en producción) o SQLite (para desarrollo local).
+* PostgreSQL (Si se utiliza como motor de base de datos en producción).
 
 ## ⚙️ Instalación y Configuración
 
