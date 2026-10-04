@@ -2,7 +2,7 @@ import prisma from "../lib/prisma.js";
 
 class ClientServices {
 
-    async getClients({ search, page = 1, limit = 10 }) {
+    async getClients({ search, page = 1, limit = 8 }) {
         const skip = (Number(page) - 1) * Number(limit);
         const take = Number(limit);
         const where = search ? {

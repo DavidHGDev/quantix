@@ -7,10 +7,22 @@ class SalesServices {
         const { clienteId, metodoDePago, detalles } = data;
 
         return await prisma.$transaction(async (tx) => {
+            // 1. Validar regla de negocio: No dar crédito al Consumidor Final
+            if (metodoDePago === 'CREDITO') {
+                const cliente = await tx.client.findUnique({ 
+                    where: { id: Number(clienteId) },
+                    select: { documento: true } 
+                });
+                
+                if (cliente && cliente.documento === '222222222') {
+                    throw new Error("No se puede otorgar crédito al Consumidor Final. Seleccione un cliente registrado con cédula válida.");
+                }
+            }
+
             let totalFactura = 0;
             const detallesCalculados = [];
 
-            // 1. Validar stock y descontar inventario
+            // 2. Validar stock y descontar inventario
             for (const item of detalles) {
                 const prod = await tx.product.findUnique({ where: { id: item.productoId } });
                 
@@ -33,11 +45,11 @@ class SalesServices {
                 });
             }
 
-            // 2. Crear Factura inmutable
+            // 3. Crear Factura inmutable
             const nuevaFactura = await tx.invoice.create({
                 data: {
                     usuarioId: userId,
-                    clienteId,
+                    clienteId: Number(clienteId),
                     metodoDePago,
                     totalPagar: totalFactura,
                     detalles: { create: detallesCalculados }
@@ -45,11 +57,11 @@ class SalesServices {
                 include: { detalles: true }
             });
 
-            // 3. Generar Crédito automáticamente si aplica
+            // 4. Generar Crédito automáticamente si aplica
             if (metodoDePago === 'CREDITO') {
                 await tx.credit.create({
                     data: {
-                        clienteId,
+                        clienteId: Number(clienteId),
                         facturaId: nuevaFactura.id,
                         montoOriginal: totalFactura,
                         saldoCredito: totalFactura,

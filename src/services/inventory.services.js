@@ -76,9 +76,10 @@ class InventoryServices {
     }
 
     // ================= PRODUCTOS =================
-    async getProducts({ search, page = 1, limit = 10, includeInactive = false }) {
+    async getProducts({ search, page = 1, limit = 12, includeInactive = false, supplierId }) {
         const skip = (Number(page) - 1) * Number(limit);
         const take = Number(limit);
+
         // Construcción dinámica de filtros
         const where = {
             ...(includeInactive ? {} : { isActive: true }),
@@ -87,8 +88,15 @@ class InventoryServices {
                     { nameProduct: { contains: search, mode: 'insensitive' } },
                     { codigoBarras: { contains: search, mode: 'insensitive' } }
                 ]
+            } : {}),
+            // ---> NUEVO FILTRO: Buscar productos de este proveedor específico
+            ...(supplierId ? {
+                suppliers: {
+                    some: { id: Number(supplierId) }
+                }
             } : {})
         };
+
         const [data, total] = await Promise.all([
             prisma.product.findMany({
                 where,
@@ -98,10 +106,11 @@ class InventoryServices {
                     categoria: { select: { nameCategorie: true } },
                     suppliers: { select: { id: true, razonSocial: true } }
                 },
-                orderBy: { id: 'desc' } // Últimos agregados primero
+                orderBy: { id: 'desc' }
             }),
             prisma.product.count({ where })
         ]);
+
         return {
             data,
             pagination: {

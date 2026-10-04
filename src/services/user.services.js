@@ -14,7 +14,7 @@ class UserServices {
         isActive: true, 
     }
 
-    async getUsers({ search, page = 1, limit = 10 }) {
+    async getUsers({ search, page = 1, limit = 8 }) {
         const skip = (Number(page) - 1) * Number(limit);
         const take = Number(limit);
         const where = search ? {

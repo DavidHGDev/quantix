@@ -1,3 +1,5 @@
+
+```markdown
 # Quantix ERP - Sistema de Gestión Empresarial
 
 Quantix es un sistema ERP (Enterprise Resource Planning) Full-Stack diseñado para optimizar y administrar los procesos operativos de las Pymes. Arquitecturado como una Single Page Application (SPA) en el frontend y una API REST robusta en el backend, permite un control integral sobre el inventario, facturación, cartera y recursos humanos.
@@ -13,7 +15,7 @@ Quantix es un sistema ERP (Enterprise Resource Planning) Full-Stack diseñado pa
 * **👥 Gestión de Usuarios:** Control de acceso basado en roles (ADMIN, VENDEDOR) con autenticación segura y cifrado de contraseñas.
 * **⚙️ Interfaz Moderna:** Diseño responsivo, manejo de temas (Claro/Oscuro), notificaciones asíncronas no intrusivas (Toasts) y modales de confirmación personalizados.
 
-## 🛠️ Stack Tecnológico
+## 🛠️️ Stack Tecnológico
 
 **Frontend:**
 * HTML5 & CSS3 (Variables nativas, Grid, Flexbox)
@@ -32,7 +34,7 @@ Quantix es un sistema ERP (Enterprise Resource Planning) Full-Stack diseñado pa
 Asegúrate de tener instalado en tu entorno local:
 * [Node.js](https://nodejs.org/) (v18 o superior)
 * Gestor de paquetes: `npm` o `pnpm`
-* PostgreSQL (Si se utiliza como motor de base de datos en producción).
+* PostgreSQL (Instalado y en ejecución).
 
 ## ⚙️ Instalación y Configuración
 
@@ -40,3 +42,47 @@ Asegúrate de tener instalado en tu entorno local:
    ```bash
    git clone https://github.com/DavidHGDev/quantix.git
    cd quantix
+
+```
+
+2. **Instalar las dependencias:**
+```bash
+npm install
+# o si usas pnpm:
+pnpm install
+
+```
+
+
+3. **Configurar las variables de entorno:**
+Crea un archivo `.env` en la raíz del proyecto basándote en el archivo de ejemplo (`.env.example`):
+```env
+PORT=3000
+DATABASE_URL="postgresql://usuario:password@localhost:5432/quantix_db"
+JWT_SECRET="tu_secreto_super_seguro_aqui"
+
+```
+
+
+4. **Preparar la Base de Datos con Prisma:**
+Ejecuta las migraciones para crear las tablas en tu base de datos PostgreSQL y genera el cliente de Prisma:
+```bash
+npx prisma migrate dev --name init
+npx prisma generate
+
+```
+
+
+5. **Iniciar el servidor (Modo Desarrollo):**
+```bash
+npm run dev
+# o
+pnpm dev
+
+```
+
+
+
+---
+
+*Desarrollado por David Hernández como proyecto productivo (SENA - 2026).*

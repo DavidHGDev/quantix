@@ -44,12 +44,13 @@ export async function updateSupplier(req, res) {
 
 // --- PRODUCTOS ---
 export async function getProducts(req, res) {
-    const { search, page, limit, all } = req.query;
+    const { search, page, limit, all, supplierId } = req.query;
     const result = await inventoryServices.getProducts({ 
         search, 
         page: page ? Number(page) : 1, 
         limit: limit ? Number(limit) : 10, 
-        includeInactive: all === 'true' 
+        includeInactive: all === 'true',
+        supplierId
     });
     res.status(200).json(result);
 }
